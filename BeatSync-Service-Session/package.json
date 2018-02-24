@@ -1,0 +1,17 @@
+{
+  "name": "beatsync-service-session",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tcaulk",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongojs": "^2.5.0",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4"
+  }
+}

@@ -1,0 +1,14 @@
+session
+==========
+playlist OR track ids
+PIN
+status
+
+1. Clients constantly poll for session status, default is "WAITING"
+2. When lead hits "Start" button, server changes session status to "VALIDATE" and sends track data + intended start time to next client poll request
+3. When client receives "MAP" status + data, client maps out tracks and returns the track data to be validated. 
+   Server should check if it has already received data from a client, and if it already has then change it's returned status to "VALIDATE"
+   "VALIDATE" status is ignored by client because the server is just waiting for all data to validate before making a "START" or "MAP" decision
+4. Server validates track data upon receiving all client's data and:
+    4a. If all data is validated properly and it is still before the intended start time then server changes status to "START"
+    4b. If any data is not validated properly or the intended start time has been passed then server changes status to "MAP"
