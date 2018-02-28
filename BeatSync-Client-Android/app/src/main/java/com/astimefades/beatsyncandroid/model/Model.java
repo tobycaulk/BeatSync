@@ -1,16 +1,12 @@
-package com.astimefades.beatsyncservice.model;
+package com.astimefades.beatsyncandroid.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-
-import java.util.Date;
 
 public class Model {
 
     private String id;
 
-    @Id
+    @JsonProperty("id")
     public String getId() {
         return id;
     }

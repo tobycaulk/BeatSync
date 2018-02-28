@@ -8,7 +8,6 @@ import com.astimefades.beatsyncservice.model.request.CreateAccountRequest;
 import com.astimefades.beatsyncservice.model.request.Request;
 import com.astimefades.beatsyncservice.model.response.Response;
 import com.astimefades.beatsyncservice.service.AccountService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,46 +29,46 @@ public class AccountController extends Controller {
 
     @GetMapping("/{id}")
     public Response<Account> getAccount(@PathVariable("id") String id) {
-        return processNoRequest(req -> accountService.getAccount(req), new ObjectId(id));
+        return processNoRequest(req -> accountService.getAccount(req), id);
     }
 
     @DeleteMapping("/{id}")
     public Response<Boolean> removeAccount(@PathVariable("id") String id) {
-        return processNoRequest(req -> accountService.removeAccount(req), new ObjectId(id));
+        return processNoRequest(req -> accountService.removeAccount(req), id);
     }
 
     @PostMapping("/{id}/track")
     public Response<Account> createTrack(@PathVariable("id") String id, @RequestBody Request<Track> request) {
-        return process(req -> accountService.createTrack(new ObjectId(id), req), request);
+        return process(req -> accountService.createTrack(id, req), request);
     }
 
     @DeleteMapping("/{accountId}/track/{trackId}")
     public Response<Boolean> deleteTrack(@PathVariable("accountId") String accountId, @PathVariable("trackId") String trackId) {
-        return processNoRequest(req -> accountService.removeTrack(new ObjectId(accountId), new ObjectId(trackId)), null);
+        return processNoRequest(req -> accountService.removeTrack(accountId, trackId), null);
     }
 
     @PatchMapping("/{id}/track")
     public Response<Account> updateTrack(@PathVariable("id") String id, @RequestBody Request<Track> request) {
-        return process(req -> accountService.updateTrack(new ObjectId(id), req), request);
+        return process(req -> accountService.updateTrack(id, req), request);
     }
 
     @PostMapping("/{id}/playlist")
     public Response<Account> createPlaylist(@PathVariable("id") String id, @RequestBody Request<Playlist> request) {
-        return process(req -> accountService.createPlaylist(new ObjectId(id), req), request);
+        return process(req -> accountService.createPlaylist(id, req), request);
     }
 
     @PatchMapping("/{id}/playlist")
     public Response<Account> updatePlaylist(@PathVariable("id") String id, @RequestBody Request<Playlist> request) {
-        return process(req -> accountService.updatePlaylist(new ObjectId(id), req), request);
+        return process(req -> accountService.updatePlaylist(id, req), request);
     }
 
     @DeleteMapping("/{accountId}/playlist/{playlistId}")
     public Response<Boolean> deletePlaylist(@PathVariable("accountId") String accountId, @PathVariable("playlistId") String playlistId) {
-        return processNoRequest(req -> accountService.removePlaylist(new ObjectId(accountId), new ObjectId(playlistId)), null);
+        return processNoRequest(req -> accountService.removePlaylist(accountId, playlistId), null);
     }
 
     @PostMapping("/{id}/session/")
     public Response<Account> createSession(@PathVariable("id") String id, @RequestBody Request<Session> request) {
-        return process(req -> accountService.createSession(new ObjectId(id), req), request);
+        return process(req -> accountService.createSession(id, req), request);
     }
 }

@@ -24,30 +24,28 @@ public abstract class MongoRepository<T extends Model> {
     public abstract Class<T> getDocumentClass();
 
     public T create(T t) {
-        t.getDetails().setDatesToNow();
         mongoTemplate.insert(t, getCollection());
 
         return findOne(t.getId());
     }
 
-    public T findOne(ObjectId id) {
+    public T findOne(String id) {
         return mongoTemplate.findOne(getQueryWhereIdIs(id), getDocumentClass(), getCollection());
     }
 
     public T update(T t) {
-        t.getDetails().setDatesToNow();
         mongoTemplate.save(t, getCollection());
 
         return findOne(t.getId());
     }
 
-    public boolean delete(ObjectId id) {
+    public boolean delete(String id) {
         mongoTemplate.remove(getQueryWhereIdIs(id), getCollection());
 
         return findOne(id) == null;
     }
 
-    public Query getQueryWhereIdIs(ObjectId id) {
+    public Query getQueryWhereIdIs(String id) {
         return Query.query(Criteria.where(ID_FIELD).is(id));
     }
 }

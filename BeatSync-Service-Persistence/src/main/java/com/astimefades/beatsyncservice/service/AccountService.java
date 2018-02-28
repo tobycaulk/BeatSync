@@ -35,11 +35,11 @@ public class AccountService {
         return accountRepository.create(account);
     }
 
-    public Account getAccount(ObjectId id) {
+    public Account getAccount(String id) {
         return accountRepository.findOne(id);
     }
 
-    public boolean removeAccount(ObjectId id) {
+    public boolean removeAccount(String id) {
         return accountRepository.delete(id);
     }
 
@@ -47,11 +47,10 @@ public class AccountService {
         return accountRepository.update(account);
     }
 
-    public Account createTrack(ObjectId id, Track track) {
+    public Account createTrack(String id, Track track) {
         Account account = getAccount(id);
         if(account != null) {
-            track.setId(new ObjectId());
-            track.getDetails().setDatesToNow();
+            track.setId(new ObjectId().toString());
             account.addTrack(track);
 
             updateAccount(account);
@@ -60,7 +59,7 @@ public class AccountService {
         return getAccount(id);
     }
 
-    public boolean removeTrack(ObjectId accountId, ObjectId trackId) {
+    public boolean removeTrack(String accountId, String trackId) {
         Account account = getAccount(accountId);
         if(account != null) {
             Track trackToRemove = Util.removeModelFromListById(account.getTracks(), trackId);
@@ -73,12 +72,11 @@ public class AccountService {
         return false;
     }
 
-    public Account updateTrack(ObjectId id, Track track) {
+    public Account updateTrack(String id, Track track) {
         Account account = getAccount(id);
         if(account != null) {
             Util.removeModelFromListById(account.getTracks(), track.getId());
 
-            track.getDetails().setDatesToNow();
             account.getTracks().add(track);
 
             updateAccount(account);
@@ -87,11 +85,10 @@ public class AccountService {
         return getAccount(id);
     }
 
-    public Account createPlaylist(ObjectId id, Playlist playlist) {
+    public Account createPlaylist(String id, Playlist playlist) {
         Account account = getAccount(id);
         if(account != null) {
-            playlist.setId(new ObjectId());
-            playlist.getDetails().setDatesToNow();
+            playlist.setId(new ObjectId().toString());
             account.addPlaylist(playlist);
 
             updateAccount(account);
@@ -100,12 +97,11 @@ public class AccountService {
         return getAccount(id);
     }
 
-    public Account updatePlaylist(ObjectId id, Playlist playlist) {
+    public Account updatePlaylist(String id, Playlist playlist) {
         Account account = getAccount(id);
         if(account != null) {
             Util.removeModelFromListById(account.getPlaylists(), playlist.getId());
 
-            playlist.getDetails().setDatesToNow();
             account.getPlaylists().add(playlist);
 
             updateAccount(account);
@@ -114,7 +110,7 @@ public class AccountService {
         return getAccount(id);
     }
 
-    public boolean removePlaylist(ObjectId accountId, ObjectId playlistId) {
+    public boolean removePlaylist(String accountId, String playlistId) {
         Account account = getAccount(accountId);
         if(account != null) {
             Playlist playlistToRemove = Util.removeModelFromListById(account.getPlaylists(), playlistId);
@@ -127,10 +123,10 @@ public class AccountService {
         return false;
     }
 
-    public Account createSession(ObjectId id, Session session) {
+    public Account createSession(String id, Session session) {
         Account account = getAccount(id);
         if(account != null) {
-            session.setId(new ObjectId());
+            session.setId(new ObjectId().toString());
             account.setSession(session);
 
             updateAccount(account);

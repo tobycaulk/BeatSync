@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Util {
 
-    public static <T extends Model> T removeModelFromListById(List<T> t, ObjectId id) {
+    public static <T extends Model> T removeModelFromListById(List<T> t, String id) {
         T toRemove = t
                 .stream()
                 .filter(o -> o.getId().equals(o.getId()))
