@@ -5,6 +5,7 @@ import com.astimefades.beatsyncservice.model.Playlist;
 import com.astimefades.beatsyncservice.model.Session;
 import com.astimefades.beatsyncservice.model.Track;
 import com.astimefades.beatsyncservice.model.request.CreateAccountRequest;
+import com.astimefades.beatsyncservice.model.request.LoginAccountRequest;
 import com.astimefades.beatsyncservice.model.request.Request;
 import com.astimefades.beatsyncservice.model.response.Response;
 import com.astimefades.beatsyncservice.service.AccountService;
@@ -20,6 +21,11 @@ public class AccountController extends Controller {
     @Autowired
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @PostMapping("/login")
+    public Response<Account> loginAccount(@RequestBody Request<LoginAccountRequest> request) {
+        return process(req -> accountService.loginAccount(req), request);
     }
 
     @PostMapping("/")

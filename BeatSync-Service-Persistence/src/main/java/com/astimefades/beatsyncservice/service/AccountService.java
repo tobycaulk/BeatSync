@@ -6,7 +6,9 @@ import com.astimefades.beatsyncservice.model.Session;
 import com.astimefades.beatsyncservice.model.Track;
 import com.astimefades.beatsyncservice.model.db.AccountRepository;
 import com.astimefades.beatsyncservice.model.error.BeatSyncError;
+import com.astimefades.beatsyncservice.model.error.BeatSyncException;
 import com.astimefades.beatsyncservice.model.request.CreateAccountRequest;
+import com.astimefades.beatsyncservice.model.request.LoginAccountRequest;
 import com.astimefades.beatsyncservice.util.PasswordUtil;
 import com.astimefades.beatsyncservice.util.Util;
 import org.bson.types.ObjectId;
@@ -23,6 +25,19 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    public Account loginAccount(LoginAccountRequest request) throws BeatSyncException {
+        Account account = getAccountByEmail(request.getEmail());
+        if(account != null) {
+            if(PasswordUtil.checkPassword(request.getPassword(), account.getPassword())) {
+                return account;
+            } else {
+                throw BeatSyncError.getException(BeatSyncError.INVALID_PASSWORD_FOR_ACCOUNT);
+            }
+        } else {
+            throw BeatSyncError.getException(BeatSyncError.EMAIL_NOT_FOUND);
+        }
+    }
+
     public Account createAccount(CreateAccountRequest request) throws Exception {
         if(isEmailTaken(request.getEmail())) {
             throw BeatSyncError.getException(BeatSyncError.EMAIL_TAKEN);
@@ -33,6 +48,10 @@ public class AccountService {
         account.setPassword(PasswordUtil.getHash(request.getPassword()));
 
         return accountRepository.create(account);
+    }
+
+    public Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email);
     }
 
     public Account getAccount(String id) {
