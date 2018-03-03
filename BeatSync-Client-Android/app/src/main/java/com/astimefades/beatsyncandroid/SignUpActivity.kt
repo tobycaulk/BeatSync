@@ -24,26 +24,50 @@ class SignUpActivity : AppCompatActivity() {
         val password = signUpPassword.text.toString().trim()
         val confirmPassword = signUpConfirmPassword.text.toString().trim()
         if(password != confirmPassword) {
-            signUpConfirmPassword.setText("")
-            Toast.makeText(this@SignUpActivity, "Passwords do not match, please try again", Toast.LENGTH_LONG).show()
+            handleMismatchingPasswords()
+        } else {
+            signUpSubmit.setOnClickListener { handleSignUp() }
         }
+    }
 
-        signUpSubmit.setOnClickListener {
-            doAsync {
-                val createAccountRequest = Request(CreateAccountRequest(signUpEmail.text.toString(), signUpPassword.text.toString()))
-                val response = persistenceApi.createAccount(createAccountRequest).execute().body()
-                if(response?.errorDescription != null) {
-                    uiThread {
-                        Toast.makeText(this@SignUpActivity, response.errorDescription, Toast.LENGTH_LONG).show()
+    private fun handleSignUp() {
+        doAsync {
+            val createAccountRequest = Request(CreateAccountRequest(signUpEmail.text.toString(), signUpPassword.text.toString()))
+            val response = persistenceApi.createAccount(createAccountRequest).execute().body()
+            uiThread {
+                if(response != null) {
+                    if(response.errorDescription != null) {
+                        handleSignUpError(response.errorDescription)
+                    } else {
+                        handleSuccessfulSignUp(response.payload!!.id, signUpPassword.text.toString(), signUpEmail.text.toString())
                     }
                 } else {
-                    uiThread {
-                        val accountPrefs = ApplicationConfiguration.getInstance(ApplicationConfiguration.ACCOUNT_PREF_FILE, this@SignUpActivity)
-                        accountPrefs.putString(ApplicationConfiguration.ACCOUNT_ID_PROP, response?.payload?.id)
-                        startActivity<MainActivity>()
-                    }
+                    handleNetworkTimeout()
                 }
             }
         }
+    }
+
+    private fun handleMismatchingPasswords() {
+        signUpConfirmPassword.setText("")
+        Toast.makeText(this@SignUpActivity, "Passwords do not match, please try again", Toast.LENGTH_LONG).show()
+    }
+
+    private fun handleSignUpError(errorDescription: String) {
+        Toast.makeText(this@SignUpActivity, errorDescription, Toast.LENGTH_LONG).show()
+    }
+
+    private fun handleNetworkTimeout() {
+        handleSignUpError("Unexpected error! Please try again.")
+    }
+
+    private fun handleSuccessfulSignUp(accountId: String, password: String, email: String) {
+        val accountPrefs = ApplicationConfiguration.getInstance(ApplicationConfiguration.ACCOUNT_PREF_FILE, this@SignUpActivity).edit()
+        accountPrefs.putString(ApplicationConfiguration.ACCOUNT_ID_PROP, accountId)
+        accountPrefs.putString(ApplicationConfiguration.ACCOUNT_PASSWORD_PROP, password)
+        accountPrefs.putString(ApplicationConfiguration.ACCOUNT_EMAIL_PROP, email)
+        accountPrefs.apply()
+
+        startActivity<MainActivity>()
     }
 }

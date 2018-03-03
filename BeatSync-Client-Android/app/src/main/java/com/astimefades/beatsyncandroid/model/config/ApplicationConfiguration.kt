@@ -9,6 +9,8 @@ import android.content.Context
 object ApplicationConfiguration {
     val ACCOUNT_PREF_FILE = "com.astimefades.beatsyncandroid.account"
     val ACCOUNT_ID_PROP = "accountId"
+    val ACCOUNT_PASSWORD_PROP = "accountPassword"
+    val ACCOUNT_EMAIL_PROP = "accountEmail"
 
-    fun getInstance(prefFile: String, activity: Activity) = activity.getSharedPreferences(prefFile, Context.MODE_PRIVATE).edit()
+    fun getInstance(prefFile: String, activity: Activity) = activity.getSharedPreferences(prefFile, Context.MODE_PRIVATE)
 }
