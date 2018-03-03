@@ -16,7 +16,6 @@ import org.jetbrains.anko.uiThread
 class SignUpActivity : AppCompatActivity() {
 
     private val persistenceApi = PersistenceApi()
-    private val applicationConfiguration = ApplicationConfiguration()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +38,8 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 } else {
                     uiThread {
-                        val accountPrefs = applicationConfiguration.getInstance(applicationConfiguration.ACCOUNT_PREF_FILE, this@SignUpActivity)
-                        accountPrefs.putString(applicationConfiguration.ACCOUNT_ID_PROP, response?.payload?.id)
+                        val accountPrefs = ApplicationConfiguration.getInstance(ApplicationConfiguration.ACCOUNT_PREF_FILE, this@SignUpActivity)
+                        accountPrefs.putString(ApplicationConfiguration.ACCOUNT_ID_PROP, response?.payload?.id)
                         startActivity<MainActivity>()
                     }
                 }
