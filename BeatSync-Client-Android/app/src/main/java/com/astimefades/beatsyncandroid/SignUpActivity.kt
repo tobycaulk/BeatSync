@@ -9,13 +9,9 @@ import com.astimefades.beatsyncandroid.model.config.ApplicationConfiguration
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.web.PersistenceApi
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.uiThread
 
 class SignUpActivity : AppCompatActivity() {
-
-    private val persistenceApi = PersistenceApi()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,21 +27,15 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun handleSignUp() {
-        doAsync {
-            val createAccountRequest = Request(CreateAccountRequest(signUpEmail.text.toString(), signUpPassword.text.toString()))
-            val response = persistenceApi.createAccount(createAccountRequest).execute().body()
-            uiThread {
-                if(response != null) {
-                    if(response.errorDescription != null) {
-                        handleSignUpError(response.errorDescription)
-                    } else {
-                        handleSuccessfulSignUp(response.payload!!.id, signUpPassword.text.toString(), signUpEmail.text.toString())
-                    }
-                } else {
-                    handleNetworkTimeout()
-                }
-            }
-        }
+        val email = signUpEmail.text.toString()
+        val password = signUpPassword.text.toString()
+        PersistenceApi.send(
+            Request(CreateAccountRequest(email, password)),
+            PersistenceApi::createAccount,
+            { account -> handleSuccessfulSignUp(account.id, password, email) },
+            { errorDescription, _ -> handleSignUpError(errorDescription) },
+            this@SignUpActivity
+        )
     }
 
     private fun handleMismatchingPasswords() {
@@ -55,10 +45,6 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun handleSignUpError(errorDescription: String) {
         Toast.makeText(this@SignUpActivity, errorDescription, Toast.LENGTH_LONG).show()
-    }
-
-    private fun handleNetworkTimeout() {
-        handleSignUpError("Unexpected error! Please try again.")
     }
 
     private fun handleSuccessfulSignUp(accountId: String, password: String, email: String) {

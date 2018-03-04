@@ -1,18 +1,22 @@
 package com.astimefades.beatsyncandroid.web
 
-import com.astimefades.beatsyncandroid.model.Account
+import android.app.Activity
+import android.widget.Toast
+import com.astimefades.beatsyncandroid.model.Model
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.model.response.Response
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 /**
- * Created by tobycaulk on 2/28/18.
+ * Created by tobycaulk on 3/4/18.
  */
-class PersistenceApi {
+object PersistenceApi {
 
     private val accountService: AccountService
 
@@ -28,4 +32,26 @@ class PersistenceApi {
     fun loginAccount(request: Request<LoginAccountRequest>) = accountService.loginAccount(request)
 
     fun createAccount(request: Request<CreateAccountRequest>) = accountService.createAccount(request)
+
+    fun<T, R: Model> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
+        send(request, send, success, failure, { /*Do nothing on timeout by default (besides display Toast) */ }, activity)
+    }
+
+    fun<T, R: Model> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, timeout: () -> Unit, activity: Activity) {
+        doAsync {
+            val response = send(request).execute().body()
+            uiThread {
+                if (response != null) {
+                    if (response.errorDescription != null) {
+                        failure(response.errorDescription, response.errorNumber!!)
+                    } else {
+                        success(response.payload)
+                    }
+                } else {
+                    timeout()
+                    Toast.makeText(activity, "Unexpected error! Please try again.", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
 }
