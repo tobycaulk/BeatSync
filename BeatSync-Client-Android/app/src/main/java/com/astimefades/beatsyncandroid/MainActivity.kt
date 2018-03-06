@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.content_main.*
+import org.jetbrains.anko.startActivity
 
 class   MainActivity : AppCompatActivity() {
 
@@ -12,7 +13,7 @@ class   MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         manageTracks.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Manage tracks clicked", Toast.LENGTH_SHORT).show()
+            startActivity<ManageTracksActivity>()
         }
 
         managePlaylists.setOnClickListener {

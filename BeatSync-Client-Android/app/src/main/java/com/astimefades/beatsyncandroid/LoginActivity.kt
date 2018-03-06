@@ -16,11 +16,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        loginSubmit.setOnClickListener { handleLogin() }
+        loginSignUp.setOnClickListener { handleSignUp() }
+
         if(userIsLoggedIn()) {
             handleUserAlreadyLoggedIn()
-        } else {
-            loginSubmit.setOnClickListener { handleLogin() }
-            loginSignUp.setOnClickListener { handleSignUp() }
         }
     }
 
@@ -55,8 +55,6 @@ class LoginActivity : AppCompatActivity() {
                 { handleNetworkTimeout() },
                 this@LoginActivity
         )
-
-        startActivity<MainActivity>()
     }
 
     private fun handleLoginResponseError(errorDescription: String) {

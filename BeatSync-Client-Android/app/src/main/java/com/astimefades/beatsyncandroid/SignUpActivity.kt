@@ -17,12 +17,12 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        signUpSubmit.setOnClickListener { handleSignUp() }
+
         val password = signUpPassword.text.toString().trim()
         val confirmPassword = signUpConfirmPassword.text.toString().trim()
         if(password != confirmPassword) {
             handleMismatchingPasswords()
-        } else {
-            signUpSubmit.setOnClickListener { handleSignUp() }
         }
     }
 

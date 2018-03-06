@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.astimefades.beatsyncandroid.ManageTracks">
+    tools:context="com.astimefades.beatsyncandroid.ManageTracksActivity">
+
+    <include layout="@layout/content_manage_tracks"/>
 
 </android.support.constraint.ConstraintLayout>

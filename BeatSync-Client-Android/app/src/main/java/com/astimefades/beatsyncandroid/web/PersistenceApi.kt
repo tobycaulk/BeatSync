@@ -39,19 +39,29 @@ object PersistenceApi {
 
     fun<T, R: Model> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, timeout: () -> Unit, activity: Activity) {
         doAsync {
-            val response = send(request).execute().body()
-            uiThread {
-                if (response != null) {
-                    if (response.errorDescription != null) {
-                        failure(response.errorDescription, response.errorNumber!!)
+            try {
+                val response = send(request).execute().body()
+                uiThread {
+                    if (response != null) {
+                        if (response.errorDescription != null) {
+                            failure(response.errorDescription!!, response.errorNumber!!)
+                        } else {
+                            success(response.payload)
+                        }
                     } else {
-                        success(response.payload)
+                        handleTimeout(activity, timeout)
                     }
-                } else {
-                    timeout()
-                    Toast.makeText(activity, "Unexpected error! Please try again.", Toast.LENGTH_LONG).show()
+                }
+            } catch(e: Exception) {
+                uiThread {
+                    handleTimeout(activity, timeout)
                 }
             }
         }
+    }
+
+    fun handleTimeout(activity: Activity, timeout: () -> Unit) {
+        timeout()
+        Toast.makeText(activity, "Unexpected error! Please try again.", Toast.LENGTH_LONG).show()
     }
 }
