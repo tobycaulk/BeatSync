@@ -54,8 +54,8 @@ public class AccountController extends Controller {
     }
 
     @DeleteMapping("/{accountId}/track/{trackId}")
-    public Response<Boolean> deleteTrack(@PathVariable("accountId") String accountId, @PathVariable("trackId") String trackId) {
-        return processNoRequest(req -> accountService.removeTrack(accountId, trackId), null);
+    public Response<Boolean> deleteTrack(@PathVariable("proxyId") String proxyId, @PathVariable("trackId") String trackId) {
+        return processNoRequest(req -> accountService.removeTrack(proxyId, trackId), null);
     }
 
     @PatchMapping("/{id}/track")
@@ -74,8 +74,8 @@ public class AccountController extends Controller {
     }
 
     @DeleteMapping("/{accountId}/playlist/{playlistId}")
-    public Response<Boolean> deletePlaylist(@PathVariable("accountId") String accountId, @PathVariable("playlistId") String playlistId) {
-        return processNoRequest(req -> accountService.removePlaylist(accountId, playlistId), null);
+    public Response<Boolean> deletePlaylist(@PathVariable("proxyId") String proxyId, @PathVariable("playlistId") String playlistId) {
+        return processNoRequest(req -> accountService.removePlaylist(proxyId, playlistId), null);
     }
 
     @PostMapping("/{id}/session/")

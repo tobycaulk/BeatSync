@@ -66,7 +66,7 @@ public class AccountService {
     }
 
     public Account createTrack(String id, Track track) {
-        Account account = getAccount(id);
+        Account account = getAccountByProxyId(id);
         if(account != null) {
             track.setId(new ObjectId().toString());
             account.addTrack(track);
@@ -77,21 +77,21 @@ public class AccountService {
         return getAccount(id);
     }
 
-    public boolean removeTrack(String accountId, String trackId) {
-        Account account = getAccount(accountId);
+    public boolean removeTrack(String proxyId, String trackId) {
+        Account account = getAccountByProxyId(proxyId);
         if(account != null) {
             Track trackToRemove = Util.removeModelFromListById(account.getTracks(), trackId);
 
             updateAccount(account);
 
-            return !getAccount(accountId).getTracks().contains(trackToRemove);
+            return !getAccountByProxyId(proxyId).getTracks().contains(trackToRemove);
         }
 
         return false;
     }
 
     public Account updateTrack(String id, Track track) {
-        Account account = getAccount(id);
+        Account account = getAccountByProxyId(id);
         if(account != null) {
             Util.removeModelFromListById(account.getTracks(), track.getId());
 
@@ -104,7 +104,7 @@ public class AccountService {
     }
 
     public Account createPlaylist(String id, Playlist playlist) {
-        Account account = getAccount(id);
+        Account account = getAccountByProxyId(id);
         if(account != null) {
             playlist.setId(new ObjectId().toString());
             account.addPlaylist(playlist);
@@ -116,7 +116,7 @@ public class AccountService {
     }
 
     public Account updatePlaylist(String id, Playlist playlist) {
-        Account account = getAccount(id);
+        Account account = getAccountByProxyId(id);
         if(account != null) {
             Util.removeModelFromListById(account.getPlaylists(), playlist.getId());
 
@@ -128,21 +128,21 @@ public class AccountService {
         return getAccount(id);
     }
 
-    public boolean removePlaylist(String accountId, String playlistId) {
-        Account account = getAccount(accountId);
+    public boolean removePlaylist(String proxyId, String playlistId) {
+        Account account = getAccountByProxyId(proxyId);
         if(account != null) {
             Playlist playlistToRemove = Util.removeModelFromListById(account.getPlaylists(), playlistId);
 
             updateAccount(account);
 
-            return !getAccount(accountId).getPlaylists().contains(playlistToRemove);
+            return !getAccountByProxyId(proxyId).getPlaylists().contains(playlistToRemove);
         }
 
         return false;
     }
 
     public Account createSession(String id, Session session) {
-        Account account = getAccount(id);
+        Account account = getAccountByProxyId(id);
         if(account != null) {
             session.setId(new ObjectId().toString());
             account.setSession(session);
