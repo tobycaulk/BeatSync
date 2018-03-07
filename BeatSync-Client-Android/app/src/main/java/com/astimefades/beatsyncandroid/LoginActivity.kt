@@ -6,13 +6,14 @@ import android.widget.Toast
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request
-import com.astimefades.beatsyncandroid.web.PersistenceApi
+import com.astimefades.beatsyncandroid.service.web.PersistenceApi
 import kotlinx.android.synthetic.main.content_login.*
 import org.jetbrains.anko.startActivity
 
 class LoginActivity : AppCompatActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@LoginActivity) }
+    private val persistenceApi = PersistenceApi()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +31,9 @@ class LoginActivity : AppCompatActivity() {
         val email = loginEmail.text.toString()
         val password = loginPassword.text.toString()
 
-        PersistenceApi.send(
+        persistenceApi.send(
                 Request(LoginAccountRequest(email, password)),
-                PersistenceApi::loginAccount,
+                persistenceApi::loginAccount,
                 { proxyId: String -> handleSuccessfulLoginResponse(proxyId) },
                 { errorDescription, _ -> handleLoginResponseError(errorDescription)},
                 { handleNetworkTimeout() },
@@ -45,9 +46,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleUserAlreadyLoggedIn() {
-        PersistenceApi.send(
+        persistenceApi.send(
                 Request(accountConfiguration.getString(AccountConfiguration.ACCOUNT_PROXY_ID_PROP)),
-                PersistenceApi::checkAccountLogin,
+                persistenceApi::checkAccountLogin,
                 { proxyId: String -> handleSuccessfulLoginResponse(proxyId) },
                 { errorDescription, _ -> handleLoginResponseError(errorDescription)},
                 { handleNetworkTimeout() },

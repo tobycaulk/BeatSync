@@ -11,7 +11,7 @@ class ManageTracksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_tracks)
 
-        val listAdapter = ArrayAdapter<String>(this@ManageTracksActivity, R.layout.simple_list_view, arrayListOf( "1", "2", "3", "5", "6" ))
+        val listAdapter = ArrayAdapter<String>(this@ManageTracksActivity, R.layout.simple_card, arrayListOf( "1", "2", "3", "5", "6" ))
         trackList.setAdapter(listAdapter)
     }
 }

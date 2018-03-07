@@ -1,6 +1,5 @@
-package com.astimefades.beatsyncandroid.web
+package com.astimefades.beatsyncandroid.service
 
-import com.astimefades.beatsyncandroid.model.Account
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request

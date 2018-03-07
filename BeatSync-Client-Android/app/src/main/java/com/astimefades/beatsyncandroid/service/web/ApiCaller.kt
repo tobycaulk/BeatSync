@@ -1,10 +1,7 @@
-package com.astimefades.beatsyncandroid.web
+package com.astimefades.beatsyncandroid.service.web
 
 import android.app.Activity
 import android.widget.Toast
-import com.astimefades.beatsyncandroid.model.Model
-import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
-import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.model.response.Response
 import org.jetbrains.anko.doAsync
@@ -14,11 +11,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 /**
- * Created by tobycaulk on 3/4/18.
+ * Created by tobycaulk on 3/7/18.
  */
-object PersistenceApi {
+open class ApiCaller<out T> (webServiceType: Class<T>) {
 
-    private val accountService: AccountService
+    protected val webService: T
 
     init {
         val retrofit = Retrofit.Builder()
@@ -26,14 +23,8 @@ object PersistenceApi {
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build()!!
 
-        accountService = retrofit.create(AccountService::class.java)
+        webService = retrofit.create(webServiceType)
     }
-
-    fun loginAccount(request: Request<LoginAccountRequest>) = accountService.loginAccount(request)
-
-    fun createAccount(request: Request<CreateAccountRequest>) = accountService.createAccount(request)
-
-    fun checkAccountLogin(request: Request<String>) = accountService.checkAccountLogin(request)
 
     fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
         send(request, send, success, failure, { /*Do nothing on timeout by default (besides display Toast) */ }, activity)

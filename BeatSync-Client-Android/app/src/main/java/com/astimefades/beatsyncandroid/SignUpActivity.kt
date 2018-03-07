@@ -8,12 +8,13 @@ import android.widget.Toast
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request
-import com.astimefades.beatsyncandroid.web.PersistenceApi
+import com.astimefades.beatsyncandroid.service.web.PersistenceApi
 import org.jetbrains.anko.startActivity
 
 class SignUpActivity : AppCompatActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@SignUpActivity) }
+    private val persistenceApi = PersistenceApi()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +32,9 @@ class SignUpActivity : AppCompatActivity() {
     private fun handleSignUp() {
         val email = signUpEmail.text.toString()
         val password = signUpPassword.text.toString()
-        PersistenceApi.send(
+        persistenceApi.send(
             Request(CreateAccountRequest(email, password)),
-            PersistenceApi::createAccount,
+            persistenceApi::createAccount,
             { proxyId: String -> handleSuccessfulSignUp(proxyId) },
             { errorDescription, _ -> handleSignUpError(errorDescription) },
             this@SignUpActivity
