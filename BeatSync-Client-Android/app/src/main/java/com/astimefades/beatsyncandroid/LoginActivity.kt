@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
         persistenceApi.send(
                 Request(LoginAccountRequest(email, password)),
                 persistenceApi::loginAccount,
-                { proxyId: String -> handleSuccessfulLoginResponse(proxyId) },
+                { proxyId: String -> handleSuccessfulLoginResponse(proxyId, true) },
                 { errorDescription, _ -> handleLoginResponseError(errorDescription)},
                 { handleNetworkTimeout() },
                 this@LoginActivity
@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         persistenceApi.send(
                 Request(accountConfiguration.getString(AccountConfiguration.ACCOUNT_PROXY_ID_PROP)),
                 persistenceApi::checkAccountLogin,
-                { proxyId: String -> handleSuccessfulLoginResponse(proxyId) },
+                { proxyId: String -> handleSuccessfulLoginResponse("", false) },
                 { errorDescription, _ -> handleLoginResponseError(errorDescription)},
                 { handleNetworkTimeout() },
                 this@LoginActivity
@@ -61,8 +61,10 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(this@LoginActivity, errorDescription, Toast.LENGTH_LONG).show()
     }
 
-    private fun handleSuccessfulLoginResponse(proxyId: String) {
-        accountConfiguration.updateAccountInformation(proxyId)
+    private fun handleSuccessfulLoginResponse(proxyId: String, update: Boolean) {
+        if(update) {
+            accountConfiguration.updateAccountInformation(proxyId)
+        }
 
         startActivity<MainActivity>()
     }

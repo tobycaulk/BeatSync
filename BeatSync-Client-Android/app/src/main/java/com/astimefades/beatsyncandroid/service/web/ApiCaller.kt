@@ -1,6 +1,7 @@
 package com.astimefades.beatsyncandroid.service.web
 
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.model.response.Response
@@ -26,8 +27,12 @@ open class ApiCaller<out T> (webServiceType: Class<T>) {
         webService = retrofit.create(webServiceType)
     }
 
+    fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, activity: Activity) {
+        send(request, send, success, { _, _ -> /* Do nothing on failure by default (besides display Toast) */ }, { /* Do nothing on timeout by default (besides display Toast) */ }, activity)
+    }
+
     fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
-        send(request, send, success, failure, { /*Do nothing on timeout by default (besides display Toast) */ }, activity)
+        send(request, send, success, failure, { /* Do nothing on timeout by default (besides display Toast) */ }, activity)
     }
 
     fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, error: () -> Unit, activity: Activity) {
@@ -37,7 +42,7 @@ open class ApiCaller<out T> (webServiceType: Class<T>) {
                 uiThread {
                     if (response != null) {
                         if (response.errorDescription != null) {
-                            failure(response.errorDescription, response.errorNumber!!)
+                            handleFailure(activity, failure, response.errorDescription, response.errorNumber!!)
                         } else {
                             success(response.payload)
                         }
@@ -53,7 +58,13 @@ open class ApiCaller<out T> (webServiceType: Class<T>) {
         }
     }
 
-    fun handleError(activity: Activity, timeout: () -> Unit) {
+    private fun handleFailure(activity: Activity, failure: (String, Int) -> Unit, errorDescription: String, errorNumber: Int) {
+        Log.e("ApiCaller", errorDescription)
+        failure(errorDescription, errorNumber)
+        Toast.makeText(activity, "Unexpected error! Please try again.", Toast.LENGTH_LONG).show()
+    }
+
+    private fun handleError(activity: Activity, timeout: () -> Unit) {
         timeout()
         Toast.makeText(activity, "Unexpected error! Please try again.", Toast.LENGTH_LONG).show()
     }
