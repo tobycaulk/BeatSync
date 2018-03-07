@@ -2,15 +2,25 @@ package com.astimefades.beatsyncandroid.model.config
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
+import kotlin.reflect.KFunction3
 
 /**
- * Created by tobycaulk on 3/3/18.
+ * Created by tobycaulk on 3/6/18.
  */
-object ApplicationConfiguration {
-    val ACCOUNT_PREF_FILE = "com.astimefades.beatsyncandroid.account"
-    val ACCOUNT_ID_PROP = "accountId"
-    val ACCOUNT_PASSWORD_PROP = "accountPassword"
-    val ACCOUNT_EMAIL_PROP = "accountEmail"
+abstract open class ApplicationConfiguration(activity: Activity) {
 
-    fun getInstance(prefFile: String, activity: Activity) = activity.getSharedPreferences(prefFile, Context.MODE_PRIVATE)
+    val sharedPreferences = activity.getSharedPreferences(getFile(), Context.MODE_PRIVATE)
+
+    abstract fun getFile(): String
+
+    private fun getSharedPreferencesEditorInstance() = sharedPreferences.edit()
+
+    fun writeString(prop: String, value: String) {
+        val editor = getSharedPreferencesEditorInstance()
+        editor.putString(prop, value)
+        editor.apply()
+    }
+
+    fun getString(prop: String) = sharedPreferences.getString(prop, null)
 }

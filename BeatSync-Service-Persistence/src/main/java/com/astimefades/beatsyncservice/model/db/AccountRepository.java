@@ -21,6 +21,12 @@ public class AccountRepository extends MongoRepository<Account> {
         return mongoTemplate.findOne(query, getDocumentClass());
     }
 
+    public Account findByProxyId(String proxyId) {
+        Query query = Query.query(Criteria.where("proxyId").is(proxyId));
+
+        return mongoTemplate.findOne(query, getDocumentClass());
+    }
+
     @Override
     public String getCollection() {
         return "account";

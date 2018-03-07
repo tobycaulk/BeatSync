@@ -23,13 +23,18 @@ public class AccountController extends Controller {
         this.accountService = accountService;
     }
 
+    @PostMapping("/login/check")
+    public Response<Boolean> checkAccountLogin(@RequestBody Request<String> request) {
+        return process(req -> accountService.checkAccountLogin(req), request);
+    }
+
     @PostMapping("/login")
-    public Response<Account> loginAccount(@RequestBody Request<LoginAccountRequest> request) {
+    public Response<String> loginAccount(@RequestBody Request<LoginAccountRequest> request) {
         return process(req -> accountService.loginAccount(req), request);
     }
 
     @PostMapping("/")
-    public Response<Account> createAccount(@RequestBody Request<CreateAccountRequest> request) {
+    public Response<String> createAccount(@RequestBody Request<CreateAccountRequest> request) {
         return process(req -> accountService.createAccount(req), request);
     }
 

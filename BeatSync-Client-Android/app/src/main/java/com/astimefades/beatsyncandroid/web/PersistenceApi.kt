@@ -33,34 +33,36 @@ object PersistenceApi {
 
     fun createAccount(request: Request<CreateAccountRequest>) = accountService.createAccount(request)
 
-    fun<T, R: Model> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
+    fun checkAccountLogin(request: Request<String>) = accountService.checkAccountLogin(request)
+
+    fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
         send(request, send, success, failure, { /*Do nothing on timeout by default (besides display Toast) */ }, activity)
     }
 
-    fun<T, R: Model> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, timeout: () -> Unit, activity: Activity) {
+    fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, error: () -> Unit, activity: Activity) {
         doAsync {
             try {
                 val response = send(request).execute().body()
                 uiThread {
                     if (response != null) {
                         if (response.errorDescription != null) {
-                            failure(response.errorDescription!!, response.errorNumber!!)
+                            failure(response.errorDescription, response.errorNumber!!)
                         } else {
                             success(response.payload)
                         }
                     } else {
-                        handleTimeout(activity, timeout)
+                        handleError(activity, error)
                     }
                 }
             } catch(e: Exception) {
                 uiThread {
-                    handleTimeout(activity, timeout)
+                    handleError(activity, error)
                 }
             }
         }
     }
 
-    fun handleTimeout(activity: Activity, timeout: () -> Unit) {
+    fun handleError(activity: Activity, timeout: () -> Unit) {
         timeout()
         Toast.makeText(activity, "Unexpected error! Please try again.", Toast.LENGTH_LONG).show()
     }

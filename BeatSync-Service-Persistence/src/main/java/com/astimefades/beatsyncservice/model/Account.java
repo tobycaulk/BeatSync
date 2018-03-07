@@ -7,11 +7,21 @@ import java.util.List;
 
 public class Account extends Model {
 
+    private String proxyId;
     private String email;
     private String password;
     private List<Track> tracks = new ArrayList<>();
     private List<Playlist> playlists = new ArrayList<>();
     private Session session;
+
+    @JsonProperty("proxyId")
+    public String getProxyId() {
+        return proxyId;
+    }
+
+    public void setProxyId(String proxyId) {
+        this.proxyId = proxyId;
+    }
 
     @JsonProperty("email")
     public String getEmail() {

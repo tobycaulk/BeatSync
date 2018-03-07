@@ -17,10 +17,13 @@ interface AccountService {
 
     @Headers("Content-Type: application/json")
     @POST("account/")
-    fun createAccount(@Body request: Request<CreateAccountRequest>): Call<Response<Account>>
+    fun createAccount(@Body request: Request<CreateAccountRequest>): Call<Response<String>>
 
     @Headers("Content-Type: application/json")
     @POST("account/login")
-    fun loginAccount(@Body request: Request<LoginAccountRequest>): Call<Response<Account>>
+    fun loginAccount(@Body request: Request<LoginAccountRequest>): Call<Response<String>>
 
+    @Headers("Content-Type: application/json")
+    @POST("account/login/check")
+    fun checkAccountLogin(@Body request: Request<String>): Call<Response<String>>
 }

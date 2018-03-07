@@ -25,11 +25,21 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Account loginAccount(LoginAccountRequest request) throws BeatSyncException {
+    public boolean checkAccountLogin(String proxyId) {
+        return getAccountByProxyId(proxyId) != null;
+    }
+
+    public String loginAccount(LoginAccountRequest request) throws BeatSyncException {
         Account account = getAccountByEmail(request.getEmail());
         if(account != null) {
             if(PasswordUtil.checkPassword(request.getPassword(), account.getPassword())) {
-                return account;
+                String proxyId = account.getProxyId();
+                if(proxyId == null || proxyId.equals("")) {
+                    account.setProxyId(new ObjectId().toString());
+                    updateAccount(account);
+                }
+
+                return proxyId;
             } else {
                 throw BeatSyncError.getException(BeatSyncError.INVALID_PASSWORD_FOR_ACCOUNT);
             }
@@ -38,32 +48,21 @@ public class AccountService {
         }
     }
 
-    public Account createAccount(CreateAccountRequest request) throws Exception {
+    public String createAccount(CreateAccountRequest request) throws Exception {
         if(isEmailTaken(request.getEmail())) {
             throw BeatSyncError.getException(BeatSyncError.EMAIL_TAKEN);
         }
 
+        String proxyId = new ObjectId().toString();
+
         Account account = new Account();
         account.setEmail(request.getEmail());
         account.setPassword(PasswordUtil.getHash(request.getPassword()));
+        account.setProxyId(proxyId);
 
-        return accountRepository.create(account);
-    }
+        accountRepository.create(account);
 
-    public Account getAccountByEmail(String email) {
-        return accountRepository.findByEmail(email);
-    }
-
-    public Account getAccount(String id) {
-        return accountRepository.findOne(id);
-    }
-
-    public boolean removeAccount(String id) {
-        return accountRepository.delete(id);
-    }
-
-    public Account updateAccount(Account account) {
-        return accountRepository.update(account);
+        return proxyId;
     }
 
     public Account createTrack(String id, Track track) {
@@ -152,6 +151,27 @@ public class AccountService {
         }
 
         return getAccount(id);
+    }
+
+
+    public Account getAccountByProxyId(String proxyId) {
+        return accountRepository.findByProxyId(proxyId);
+    }
+
+    public Account getAccountByEmail(String email) {
+        return accountRepository.findByEmail(email);
+    }
+
+    public Account getAccount(String id) {
+        return accountRepository.findOne(id);
+    }
+
+    public boolean removeAccount(String id) {
+        return accountRepository.delete(id);
+    }
+
+    public Account updateAccount(Account account) {
+        return accountRepository.update(account);
     }
 
     public boolean isEmailTaken(String email) {
