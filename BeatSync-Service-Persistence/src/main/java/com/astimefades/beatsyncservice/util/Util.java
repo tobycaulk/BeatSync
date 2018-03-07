@@ -18,4 +18,11 @@ public class Util {
 
         return toRemove;
     }
+
+    public static <T extends Model> T getModelFromListById(List<T> t, String id) {
+        return t
+                .stream()
+                .filter(o -> o.getId().equals(o.getId()))
+                .findFirst().orElseGet(() -> null);
+    }
 }

@@ -7,6 +7,7 @@ public class BeatSyncError {
     public static final BeatSyncError EMAIL_TAKEN = new BeatSyncError(2, "Email is taken");
     public static final BeatSyncError EMAIL_NOT_FOUND = new BeatSyncError(3, "Email not found");
     public static final BeatSyncError INVALID_PASSWORD_FOR_ACCOUNT = new BeatSyncError(4, "Invalid password");
+    public static final BeatSyncError INVALID_PROXY_ID = new BeatSyncError(5, "Invalid session, please login again");
 
     public final int errorNumber;
     public final String errorDescription;

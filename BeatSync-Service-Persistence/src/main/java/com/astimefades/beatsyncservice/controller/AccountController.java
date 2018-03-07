@@ -9,33 +9,47 @@ import com.astimefades.beatsyncservice.model.request.LoginAccountRequest;
 import com.astimefades.beatsyncservice.model.request.Request;
 import com.astimefades.beatsyncservice.model.response.Response;
 import com.astimefades.beatsyncservice.service.AccountService;
+import com.astimefades.beatsyncservice.service.PlaylistService;
+import com.astimefades.beatsyncservice.service.SessionService;
+import com.astimefades.beatsyncservice.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/account")
 public class AccountController extends Controller {
 
     private AccountService accountService;
+    private TrackService trackService;
+    private PlaylistService playlistService;
+    private SessionService sessionService;
 
     @Autowired
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService,
+                             TrackService trackService,
+                             PlaylistService playlistService,
+                             SessionService sessionService) {
         this.accountService = accountService;
+        this.trackService = trackService;
+        this.playlistService = playlistService;
+        this.sessionService = sessionService;
     }
 
     @PostMapping("/login/check")
     public Response<Boolean> checkAccountLogin(@RequestBody Request<String> request) {
-        return process(req -> accountService.checkAccountLogin(req), request);
+        return process(req -> accountService.checkLogin(req), request);
     }
 
     @PostMapping("/login")
     public Response<String> loginAccount(@RequestBody Request<LoginAccountRequest> request) {
-        return process(req -> accountService.loginAccount(req), request);
+        return process(req -> accountService.login(req), request);
     }
 
     @PostMapping("/")
     public Response<String> createAccount(@RequestBody Request<CreateAccountRequest> request) {
-        return process(req -> accountService.createAccount(req), request);
+        return process(req -> accountService.create(req), request);
     }
 
     @GetMapping("/{id}")
@@ -48,38 +62,58 @@ public class AccountController extends Controller {
         return processNoRequest(req -> accountService.removeAccount(req), id);
     }
 
-    @PostMapping("/{id}/track")
-    public Response<Account> createTrack(@PathVariable("id") String id, @RequestBody Request<Track> request) {
-        return process(req -> accountService.createTrack(id, req), request);
+    @GetMapping("/{id}/track/all")
+    public Response<List<Track>> getAllTracks(@PathVariable("id") String id) {
+        return processNoRequest(req -> trackService.getAll(req), id);
     }
 
-    @DeleteMapping("/{accountId}/track/{trackId}")
-    public Response<Boolean> deleteTrack(@PathVariable("proxyId") String proxyId, @PathVariable("trackId") String trackId) {
-        return processNoRequest(req -> accountService.removeTrack(proxyId, trackId), null);
+    @GetMapping("/{proxyId}/track/{trackId}")
+    public Response<Track> getTrack(@PathVariable("proxyId") String proxyId, @PathVariable("trackId") String trackId) {
+        return processNoRequest(req -> trackService.get(proxyId, trackId), null);
+    }
+
+    @PostMapping("/{id}/track")
+    public Response<Track> createTrack(@PathVariable("id") String id, @RequestBody Request<Track> request) {
+        return process(req -> trackService.create(id, req), request);
     }
 
     @PatchMapping("/{id}/track")
-    public Response<Account> updateTrack(@PathVariable("id") String id, @RequestBody Request<Track> request) {
-        return process(req -> accountService.updateTrack(id, req), request);
+    public Response<Track> updateTrack(@PathVariable("id") String id, @RequestBody Request<Track> request) {
+        return process(req -> trackService.update(id, req), request);
+    }
+
+    @DeleteMapping("/{proxyId}/track/{trackId}")
+    public Response<Boolean> deleteTrack(@PathVariable("proxyId") String proxyId, @PathVariable("trackId") String trackId) {
+        return processNoRequest(req -> trackService.remove(proxyId, trackId), null);
     }
 
     @PostMapping("/{id}/playlist")
-    public Response<Account> createPlaylist(@PathVariable("id") String id, @RequestBody Request<Playlist> request) {
-        return process(req -> accountService.createPlaylist(id, req), request);
+    public Response<Playlist> createPlaylist(@PathVariable("id") String id, @RequestBody Request<Playlist> request) {
+        return process(req -> playlistService.create(id, req), request);
+    }
+
+    @GetMapping("/{id}/playlist/all")
+    public Response<List<Playlist>> getAllPlaylists(@PathVariable("id") String proxyId) {
+        return processNoRequest(req -> playlistService.getAll(req), proxyId);
+    }
+
+    @GetMapping("/{proxyId/playlist/{playlistId}")
+    public Response<Playlist> getPlaylist(@PathVariable("proxyId") String proxyId, @PathVariable("playlistId") String playlistId) {
+        return processNoRequest(req -> playlistService.get(proxyId, playlistId), null);
     }
 
     @PatchMapping("/{id}/playlist")
-    public Response<Account> updatePlaylist(@PathVariable("id") String id, @RequestBody Request<Playlist> request) {
-        return process(req -> accountService.updatePlaylist(id, req), request);
+    public Response<Playlist> updatePlaylist(@PathVariable("id") String id, @RequestBody Request<Playlist> request) {
+        return process(req -> playlistService.update(id, req), request);
     }
 
-    @DeleteMapping("/{accountId}/playlist/{playlistId}")
+    @DeleteMapping("/{proxyId}/playlist/{playlistId}")
     public Response<Boolean> deletePlaylist(@PathVariable("proxyId") String proxyId, @PathVariable("playlistId") String playlistId) {
-        return processNoRequest(req -> accountService.removePlaylist(proxyId, playlistId), null);
+        return processNoRequest(req -> playlistService.remove(proxyId, playlistId), null);
     }
 
     @PostMapping("/{id}/session/")
-    public Response<Account> createSession(@PathVariable("id") String id, @RequestBody Request<Session> request) {
-        return process(req -> accountService.createSession(id, req), request);
+    public Response<Session> createSession(@PathVariable("id") String id, @RequestBody Request<Session> request) {
+        return process(req -> sessionService.create(id, req), request);
     }
 }
