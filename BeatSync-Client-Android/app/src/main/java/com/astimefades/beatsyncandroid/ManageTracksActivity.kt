@@ -21,11 +21,18 @@ class ManageTracksActivity : AppCompatActivity() {
 
         persistenceApi.send(
                 Request(accountConfiguration.getString(AccountConfiguration.ACCOUNT_PROXY_ID_PROP)),
-                persistenceApi::getAllTracks,
-                { tracks: List<Track> ->
-                    trackList.adapter = ArrayAdapter<Track>(this@ManageTracksActivity, R.layout.simple_card, tracks)
-                    Log.i("ManageTracksActivity", tracks.size.toString())
+                persistenceApi::getAllTracks, { tracks: List<Track> ->
+                    var trackNames: List<String> = tracks.map { it.name }
+                    trackList.adapter = ArrayAdapter<String>(this@ManageTracksActivity, R.layout.simple_card, trackNames)
+                    trackList.setOnItemClickListener { _, _, position, _ ->
+                        val track = tracks[position]
+                        Log.d("ManageTracksActivity", "Track " + track.name + " clicked")
+                    }
                 },
                 this@ManageTracksActivity)
+
+        addTrackButton.setOnClickListener {
+            Log.d("ManageTracksActivity", "Add track clicked")
+        }
     }
 }

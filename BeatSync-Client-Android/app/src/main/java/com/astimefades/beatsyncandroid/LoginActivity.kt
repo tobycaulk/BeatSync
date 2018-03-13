@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         persistenceApi.send(
                 Request(accountConfiguration.getString(AccountConfiguration.ACCOUNT_PROXY_ID_PROP)),
                 persistenceApi::checkAccountLogin,
-                { proxyId: String -> handleSuccessfulLoginResponse("", false) },
+                { _: String -> handleSuccessfulLoginResponse("", false) },
                 { errorDescription, _ -> handleLoginResponseError(errorDescription)},
                 { handleNetworkTimeout() },
                 this@LoginActivity
