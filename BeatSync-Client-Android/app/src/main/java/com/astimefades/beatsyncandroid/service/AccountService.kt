@@ -28,4 +28,8 @@ interface AccountService {
     @Headers("Content-Type: application/json")
     @GET("account/{id}/track/all")
     fun getAllTracks(@Path("id") id: String): Call<Response<List<Track>>>
+
+    @Headers("Content-Type: application/json")
+    @GET("account/{proxyId}/track/{id}")
+    fun getTrack(@Path("proxyId") proxyId: String, @Path("id") id: String): Call<Response<Track>>
 }

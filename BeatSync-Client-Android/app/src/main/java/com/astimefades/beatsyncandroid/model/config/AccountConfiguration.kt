@@ -15,6 +15,8 @@ class AccountConfiguration(activity: Activity) : ApplicationConfiguration(activi
         writeString(ACCOUNT_PROXY_ID_PROP, proxyId)
     }
 
+    fun getProxyId() = getString(ACCOUNT_PROXY_ID_PROP)
+
     override fun getFile(): String {
         return "com.astimefades.beatsyncandroid.account"
     }

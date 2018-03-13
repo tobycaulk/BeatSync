@@ -9,6 +9,7 @@ import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
 import kotlinx.android.synthetic.main.content_manage_tracks.*
+import org.jetbrains.anko.startActivity
 
 class ManageTracksActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class ManageTracksActivity : AppCompatActivity() {
                     trackList.adapter = ArrayAdapter<String>(this@ManageTracksActivity, R.layout.simple_card, trackNames)
                     trackList.setOnItemClickListener { _, _, position, _ ->
                         val track = tracks[position]
-                        Log.d("ManageTracksActivity", "Track " + track.name + " clicked")
+                        startActivity<EditTrackActivity>("trackId" to track.id)
                     }
                 },
                 this@ManageTracksActivity)
