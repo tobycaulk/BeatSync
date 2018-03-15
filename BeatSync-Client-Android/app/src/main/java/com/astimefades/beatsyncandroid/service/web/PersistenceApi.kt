@@ -1,5 +1,6 @@
 package com.astimefades.beatsyncandroid.service.web
 
+import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
 import com.astimefades.beatsyncandroid.model.request.Request
@@ -19,4 +20,6 @@ class PersistenceApi: ApiCaller<AccountService>(AccountService::class.java) {
     fun getAllTracks(request: Request<String>) = webService.getAllTracks(request.payload)
 
     fun getTrack(request: Request<Pair<String, String>>) = webService.getTrack(request.payload.first, request.payload.second)
+
+    fun saveTrack(request: Request<Pair<String, Request<Track>>>) = webService.saveTrack(request.payload.first, request.payload.second)
 }
