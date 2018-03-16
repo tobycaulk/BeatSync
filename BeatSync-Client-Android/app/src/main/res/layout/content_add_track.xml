@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/addTrackName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:ems="10"
+        android:hint="Title"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/addTrackBpm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/addTrackName"
+        android:layout_below="@+id/addTrackName"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="BPM"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/addTrackLength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/addTrackBpm"
+        android:layout_below="@+id/addTrackBpm"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="Length"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/addTrackCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addTrackLength"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="Create" />
+</RelativeLayout>

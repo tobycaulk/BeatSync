@@ -36,4 +36,8 @@ interface AccountService {
     @Headers("Content-Type: application/json")
     @PATCH("account/{id}/track/")
     fun saveTrack(@Path("id") proxyId: String, @Body request: Request<Track>): Call<Response<Track>>
+
+    @Headers("Content-Type: application/json")
+    @POST("account/{id}/track/")
+    fun createTrack(@Path("id") proxyId: String, @Body request: Request<Track>): Call<Response<Track>>
 }

@@ -24,7 +24,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ManageTracksActivity" />
-        <activity android:name=".EditTrackActivity"></activity>
+        <activity android:name=".EditTrackActivity" />
+        <activity android:name=".AddTrackActivity"></activity>
     </application>
 
 </manifest>

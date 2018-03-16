@@ -33,7 +33,7 @@ class ManageTracksActivity : AppCompatActivity() {
                 this@ManageTracksActivity)
 
         addTrackButton.setOnClickListener {
-            Log.d("ManageTracksActivity", "Add track clicked")
+            startActivity<AddTrackActivity>()
         }
     }
 }
