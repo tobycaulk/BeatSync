@@ -21,7 +21,7 @@ class ManageTracksActivity : AppCompatActivity() {
         setContentView(R.layout.activity_manage_tracks)
 
         persistenceApi.send(
-                Request(accountConfiguration.getString(AccountConfiguration.ACCOUNT_PROXY_ID_PROP)),
+                accountConfiguration.getString(AccountConfiguration.ACCOUNT_PROXY_ID_PROP),
                 persistenceApi::getAllTracks, { tracks: List<Track> ->
                     var trackNames: List<String> = tracks.map { it.name }
                     trackList.adapter = ArrayAdapter<String>(this@ManageTracksActivity, R.layout.simple_card, trackNames)

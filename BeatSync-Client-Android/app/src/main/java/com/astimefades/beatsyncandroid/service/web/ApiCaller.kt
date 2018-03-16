@@ -27,15 +27,15 @@ open class ApiCaller<out T> (webServiceType: Class<T>) {
         webService = retrofit.create(webServiceType)
     }
 
-    fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, activity: Activity) {
+    fun<T, R> send(request: T, send: (T) -> Call<Response<R>>, success: (R) -> Unit, activity: Activity) {
         send(request, send, success, { _, _ -> /* Do nothing on failure by default (besides display Toast) */ }, { /* Do nothing on timeout by default (besides display Toast) */ }, activity)
     }
 
-    fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
+    fun<T, R> send(request: T, send: (T) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, activity: Activity) {
         send(request, send, success, failure, { /* Do nothing on timeout by default (besides display Toast) */ }, activity)
     }
 
-    fun<T, R> send(request: Request<T>, send: (Request<T>) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, error: () -> Unit, activity: Activity) {
+    fun<T, R> send(request: T, send: (T) -> Call<Response<R>>, success: (R) -> Unit, failure: (String, Int) -> Unit, error: () -> Unit, activity: Activity) {
         doAsync {
             try {
                 val response = send(request).execute().body()

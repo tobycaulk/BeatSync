@@ -29,7 +29,7 @@ class EditTrackActivity : AppCompatActivity() {
 
     private fun populateTrackDetails(trackId: String) {
         persistenceApi.send(
-                Request(Pair(accountConfiguration.getProxyId(), trackId)),
+                Pair(accountConfiguration.getProxyId(), trackId),
                 persistenceApi::getTrack,
                 { track -> handleSuccessfulTrackGet(track) },
                 { errorDescription, _ -> handleTrackGetError(errorDescription) },
@@ -56,7 +56,7 @@ class EditTrackActivity : AppCompatActivity() {
         track.length = editTrackLength.text.toString().toInt()
 
         persistenceApi.send(
-                Request(Pair(accountConfiguration.getProxyId(), Request(track))),
+                Pair(accountConfiguration.getProxyId(), Request(track)),
                 persistenceApi::saveTrack,
                 { track -> handleSuccessfulTrackSave(track) },
                 { errorDescription, _ -> handleTrackSaveError(errorDescription) },

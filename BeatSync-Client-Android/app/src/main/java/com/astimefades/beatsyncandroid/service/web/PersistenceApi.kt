@@ -17,9 +17,9 @@ class PersistenceApi: ApiCaller<AccountService>(AccountService::class.java) {
 
     fun checkAccountLogin(request: Request<String>) = webService.checkAccountLogin(request)
 
-    fun getAllTracks(request: Request<String>) = webService.getAllTracks(request.payload)
+    fun getAllTracks(request: String) = webService.getAllTracks(request)
 
-    fun getTrack(request: Request<Pair<String, String>>) = webService.getTrack(request.payload.first, request.payload.second)
+    fun getTrack(request: Pair<String, String>) = webService.getTrack(request.first, request.second)
 
-    fun saveTrack(request: Request<Pair<String, Request<Track>>>) = webService.saveTrack(request.payload.first, request.payload.second)
+    fun saveTrack(request: Pair<String, Request<Track>>) = webService.saveTrack(request.first, request.second)
 }
