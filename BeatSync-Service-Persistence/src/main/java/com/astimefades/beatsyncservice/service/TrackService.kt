@@ -35,7 +35,7 @@ class TrackService(@Autowired accountRepository: AccountRepository): BaseAccount
     }
 
     fun getAll(proxyId: String): List<Track>? {
-2        var account = getAccountByProxyId(proxyId)
+        var account = getAccountByProxyId(proxyId)
         if(account != null) {
             return account.tracks
         } else {
