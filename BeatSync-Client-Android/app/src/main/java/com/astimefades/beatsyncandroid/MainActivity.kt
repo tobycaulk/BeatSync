@@ -17,7 +17,7 @@ class   MainActivity : AppCompatActivity() {
         }
 
         managePlaylists.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Manage playlists clicked", Toast.LENGTH_SHORT).show()
+            startActivity<ManagePlaylistsActivity>()
         }
 
         manageSession.setOnClickListener {

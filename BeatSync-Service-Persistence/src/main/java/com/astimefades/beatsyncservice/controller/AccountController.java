@@ -97,7 +97,7 @@ public class AccountController extends Controller {
         return processNoRequest(req -> playlistService.getAll(req), proxyId);
     }
 
-    @GetMapping("/{proxyId/playlist/{playlistId}")
+    @GetMapping("/{proxyId}/playlist/{playlistId}")
     public Response<Playlist> getPlaylist(@PathVariable("proxyId") String proxyId, @PathVariable("playlistId") String playlistId) {
         return processNoRequest(req -> playlistService.get(proxyId, playlistId), null);
     }

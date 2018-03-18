@@ -9,7 +9,8 @@ import java.util.List;
 public class Playlist extends Model {
 
     private String name;
-    private List<ObjectId> tracks = new ArrayList<>();
+    private List<String> tracks = new ArrayList<>();
+    private List<Track> fqTracks = new ArrayList<>();
 
     @JsonProperty("name")
     public String getName() {
@@ -21,11 +22,20 @@ public class Playlist extends Model {
     }
 
     @JsonProperty("tracks")
-    public List<ObjectId> getTracks() {
+    public List<String> getTracks() {
         return tracks;
     }
 
-    public void setTracks(List<ObjectId> tracks) {
+    public void setTracks(List<String> tracks) {
         this.tracks = tracks;
+    }
+
+    @JsonProperty("fqTracks")
+    public List<Track> getFqTracks() {
+        return fqTracks;
+    }
+
+    public void setFqTracks(List<Track> fqTracks) {
+        this.fqTracks = fqTracks;
     }
 }

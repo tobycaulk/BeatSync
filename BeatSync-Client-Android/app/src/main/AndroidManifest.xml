@@ -25,7 +25,10 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ManageTracksActivity" />
         <activity android:name=".EditTrackActivity" />
-        <activity android:name=".AddTrackActivity"></activity>
+        <activity android:name=".AddTrackActivity" />
+        <activity android:name=".ManagePlaylistsActivity" />
+        <activity android:name=".EditPlaylistMainDetailsActivity" />
+        <activity android:name=".EditPlaylistTracksActivity"></activity>
     </application>
 
 </manifest>

@@ -28,7 +28,12 @@ class PlaylistService(@Autowired accountRepository: AccountRepository): BaseAcco
     fun get(id: String, playlistId: String): Playlist? {
         var account = getAccountByProxyId(id)
         if(account != null) {
-            return Util.getModelFromListById(account.playlists, playlistId)
+            val playlist = Util.getModelFromListById(account.playlists, playlistId)
+            playlist.tracks.forEach { trackId ->
+                playlist.fqTracks.add(account.tracks.single { accountTrack -> accountTrack.id == trackId })
+            }
+
+            return playlist
         } else {
             throw BeatSyncError.getException(BeatSyncError.INVALID_PROXY_ID)
         }

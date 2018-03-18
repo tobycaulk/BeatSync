@@ -1,5 +1,6 @@
 package com.astimefades.beatsyncandroid.service
 
+import com.astimefades.beatsyncandroid.model.Playlist
 import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
@@ -40,4 +41,12 @@ interface AccountService {
     @Headers("Content-Type: application/json")
     @POST("account/{id}/track/")
     fun createTrack(@Path("id") proxyId: String, @Body request: Request<Track>): Call<Response<Track>>
+
+    @Headers("Content-Type: application/json")
+    @GET("account/{id}/playlist/all")
+    fun getAllPlaylists(@Path("id") id: String): Call<Response<List<Playlist>>>
+
+    @Headers("Content-Type: application/json")
+    @GET("account/{proxyId}/playlist/{id}")
+    fun getPlaylist(@Path("proxyId") proxyId: String, @Path("id") id: String): Call<Response<Playlist>>
 }
