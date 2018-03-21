@@ -1,16 +1,16 @@
 package com.astimefades.beatsyncandroid
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.astimefades.beatsyncandroid.model.Playlist
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
+import kotlinx.android.synthetic.main.activity_edit_playlist_main_details.*
 import kotlinx.android.synthetic.main.content_edit_playlist_main_details.*
 import org.jetbrains.anko.startActivity
 
-class EditPlaylistMainDetailsActivity : AppCompatActivity() {
+class EditPlaylistMainDetailsActivity : BottomNavigationActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@EditPlaylistMainDetailsActivity) }
     private val persistenceApi = PersistenceApi()
@@ -18,6 +18,8 @@ class EditPlaylistMainDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_playlist_main_details)
+
+        bottomNavigation.setOnNavigationItemSelectedListener { item -> handleNavigationItemClicked(item) }
 
         val playlistId = intent.extras["playlistId"]
         if(playlistId != null) {

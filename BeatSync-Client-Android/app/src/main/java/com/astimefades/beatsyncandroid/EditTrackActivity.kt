@@ -7,10 +7,11 @@ import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
+import kotlinx.android.synthetic.main.activity_edit_track.*
 import kotlinx.android.synthetic.main.content_edit_track.*
 import org.jetbrains.anko.startActivity
 
-class EditTrackActivity : AppCompatActivity() {
+class EditTrackActivity : BottomNavigationActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@EditTrackActivity) }
     private val persistenceApi = PersistenceApi()
@@ -18,6 +19,8 @@ class EditTrackActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_track)
+
+        bottomNavigation.setOnNavigationItemSelectedListener { item -> handleNavigationItemClicked(item) }
 
         var trackId = intent.extras["trackId"]
         if(trackId != null) {

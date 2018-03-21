@@ -6,6 +6,31 @@
     android:layout_height="match_parent"
     tools:context="com.astimefades.beatsyncandroid.ManagePlaylistsActivity">
 
-    <include layout="@layout/content_manage_playlists" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_manage_playlists" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addPlaylistButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:focusable="true"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/bottom_nav_items" />
 
 </android.support.constraint.ConstraintLayout>

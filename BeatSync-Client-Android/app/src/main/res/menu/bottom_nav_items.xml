@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_tracks"
+        android:icon="@drawable/ic_music_note_black_24dp"
+        android:title="Tracks" />
+
+    <item
+        android:id="@+id/action_playlists"
+        android:icon="@drawable/ic_playlist_add_black_24dp"
+        android:title="Playlists" />
+
+    <item
+        android:id="@+id/action_session"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="Session" />
+
+</menu>

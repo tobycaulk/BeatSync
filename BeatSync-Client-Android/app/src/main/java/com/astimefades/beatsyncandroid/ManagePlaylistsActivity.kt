@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
+import kotlinx.android.synthetic.main.activity_manage_playlists.*
 import kotlinx.android.synthetic.main.content_manage_playlists.*
 import org.jetbrains.anko.startActivity
 
-class ManagePlaylistsActivity : AppCompatActivity() {
+class ManagePlaylistsActivity : BottomNavigationActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@ManagePlaylistsActivity) }
     private val persistenceApi = PersistenceApi()
@@ -17,7 +18,11 @@ class ManagePlaylistsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_playlists)
 
+        bottomNavigation.setOnNavigationItemSelectedListener { item -> handleNavigationItemClicked(item) }
+
         populatePlaylists()
+
+        addPlaylistButton.setOnClickListener { handleAddPlaylist() }
     }
 
     private fun populatePlaylists() {
@@ -34,5 +39,9 @@ class ManagePlaylistsActivity : AppCompatActivity() {
                 },
                 this@ManagePlaylistsActivity
         )
+    }
+
+    private fun handleAddPlaylist() {
+
     }
 }

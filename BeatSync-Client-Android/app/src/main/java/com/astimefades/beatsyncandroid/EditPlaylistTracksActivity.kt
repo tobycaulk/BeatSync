@@ -1,7 +1,6 @@
 package com.astimefades.beatsyncandroid
 
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -15,11 +14,12 @@ import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
+import kotlinx.android.synthetic.main.activity_edit_playlist_tracks.*
 import kotlinx.android.synthetic.main.content_edit_playlist_tracks.*
 import kotlinx.android.synthetic.main.simple_card.view.*
 import org.jetbrains.anko.startActivity
 
-class EditPlaylistTracksActivity : AppCompatActivity() {
+class EditPlaylistTracksActivity : BottomNavigationActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@EditPlaylistTracksActivity) }
     private val persistenceApi = PersistenceApi()
@@ -30,7 +30,7 @@ class EditPlaylistTracksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_playlist_tracks)
 
-        trackState.clear()
+        bottomNavigation.setOnNavigationItemSelectedListener { item -> handleNavigationItemClicked(item) }
 
         val playlistId = intent.extras["playlistId"]
         if(playlistId != null) {

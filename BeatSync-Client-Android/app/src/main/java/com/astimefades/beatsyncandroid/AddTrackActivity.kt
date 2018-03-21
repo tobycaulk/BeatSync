@@ -1,16 +1,16 @@
 package com.astimefades.beatsyncandroid
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
 import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
+import kotlinx.android.synthetic.main.activity_add_track.*
 import kotlinx.android.synthetic.main.content_add_track.*
 import org.jetbrains.anko.startActivity
 
-class AddTrackActivity : AppCompatActivity() {
+class AddTrackActivity : BottomNavigationActivity() {
 
     private val accountConfiguration by lazy { AccountConfiguration(this@AddTrackActivity) }
     private val persistenceApi = PersistenceApi()
@@ -18,6 +18,8 @@ class AddTrackActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_track)
+
+        bottomNavigation.setOnNavigationItemSelectedListener { item -> handleNavigationItemClicked(item) }
 
         addTrackCreate.setOnClickListener{ handleCreate() }
     }

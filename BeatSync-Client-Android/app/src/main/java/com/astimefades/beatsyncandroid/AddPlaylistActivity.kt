@@ -1,13 +1,13 @@
 package com.astimefades.beatsyncandroid
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_add_playlist.*
 
-class MainActivity : BottomNavigationActivity() {
+class AddPlaylistActivity : BottomNavigationActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_add_playlist)
 
         bottomNavigation.setOnNavigationItemSelectedListener { item -> handleNavigationItemClicked(item) }
     }
