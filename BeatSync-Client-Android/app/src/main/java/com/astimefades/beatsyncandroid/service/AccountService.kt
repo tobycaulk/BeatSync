@@ -49,4 +49,8 @@ interface AccountService {
     @Headers("Content-Type: application/json")
     @GET("account/{proxyId}/playlist/{id}")
     fun getPlaylist(@Path("proxyId") proxyId: String, @Path("id") id: String): Call<Response<Playlist>>
+
+    @Headers("Content-Type: application/json")
+    @PATCH("account/{id}/playlist/")
+    fun savePlaylist(@Path("id") proxyId: String, @Body request: Request<Playlist>): Call<Response<Playlist>>
 }

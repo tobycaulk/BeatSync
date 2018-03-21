@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import com.astimefades.beatsyncandroid.model.Playlist
 import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
+import com.astimefades.beatsyncandroid.model.request.Request
 import com.astimefades.beatsyncandroid.service.web.PersistenceApi
 import kotlinx.android.synthetic.main.content_edit_playlist_tracks.*
 import kotlinx.android.synthetic.main.simple_card.view.*
+import org.jetbrains.anko.startActivity
 
 class EditPlaylistTracksActivity : AppCompatActivity() {
 
@@ -27,17 +30,42 @@ class EditPlaylistTracksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_playlist_tracks)
 
+        trackState.clear()
+
         val playlistId = intent.extras["playlistId"]
         if(playlistId != null) {
             populatePlaylistDetails(playlistId.toString())
+            editPlaylistTracksSave.setOnClickListener { handleSave(playlistId.toString()) }
         }
     }
 
+    private fun handleSave(playlistId: String) {
+        val selectedTracks: List<String> = trackState
+                .filterValues { selected -> selected }
+                .keys.map{ track ->  track.id }
+        getPlaylistDetails(playlistId, { playlist ->
+            playlist.tracks = selectedTracks
+            persistenceApi.send(
+                    Pair(accountConfiguration.getProxyId(), Request(playlist)),
+                    persistenceApi::savePlaylist,
+                    { _ ->
+                        Toast.makeText(this@EditPlaylistTracksActivity, "Playlist information saved!", Toast.LENGTH_LONG)
+                        startActivity<ManagePlaylistsActivity>()
+                    },
+                    this@EditPlaylistTracksActivity
+            )
+        })
+    }
+
     private fun populatePlaylistDetails(playlistId: String) {
+        getPlaylistDetails(playlistId, { playlist -> handleSuccessfulPlaylistGet(playlist) })
+    }
+
+    private fun getPlaylistDetails(playlistId: String, callback: (playlist: Playlist) -> Unit) {
         persistenceApi.send(
                 Pair(accountConfiguration.getProxyId(), playlistId),
                 persistenceApi::getPlaylist,
-                { playlist -> handleSuccessfulPlaylistGet(playlist) },
+                { playlist -> callback(playlist) },
                 this@EditPlaylistTracksActivity
         )
     }
@@ -58,12 +86,12 @@ class EditPlaylistTracksActivity : AppCompatActivity() {
                     }
 
                     playlistTrackList.adapter = EditPlaylistTrackAdapter(this@EditPlaylistTracksActivity, trackState.keys.toList())
-                    playlistTrackList.setOnItemClickListener { _, view, position, _ ->
+                    playlistTrackList.setOnItemClickListener { _, view, _, _ ->
                         var textView: TextView? = view as? TextView
                         if(textView != null) {
                             val track = trackState.keys.single { t -> textView.text == t.name }
-                            trackState.set(track, !trackState.get(track)!!)
-                            var selected = trackState.get(track)!!
+                            trackState[track] = !trackState[track]!!
+                            var selected = trackState[track]!!
                             if(selected) {
                                 view.background = ContextCompat.getDrawable(this@EditPlaylistTracksActivity, R.color.colorAccent)
                             } else {
@@ -86,7 +114,7 @@ class EditPlaylistTracksActivity : AppCompatActivity() {
             }
 
             returnedView!!.simpleCard.text = track.name
-            var trackSelected = trackState.get(track)
+            var trackSelected = trackState[track]
             if(trackSelected != null) {
                 if(trackSelected) {
                     returnedView.background = ContextCompat.getDrawable(this@EditPlaylistTracksActivity, R.color.colorAccent)

@@ -4,21 +4,29 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/editPlaylistTracksSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Save" />
 
         <TextView
             android:id="@+id/editPlaylistTracksName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-    </LinearLayout>
-    
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp" />
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/playlistTrackList"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent">
-    </ListView>
+        android:layout_height="fill_parent"></ListView>
 
 </LinearLayout>

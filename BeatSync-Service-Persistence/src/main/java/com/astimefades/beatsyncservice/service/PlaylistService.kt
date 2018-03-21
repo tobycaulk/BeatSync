@@ -61,6 +61,7 @@ class PlaylistService(@Autowired accountRepository: AccountRepository): BaseAcco
     }
 
     fun update(id: String, playlist: Playlist): Playlist? {
+        playlist.fqTracks.clear()
         var account = getAccountByProxyId(id)
         if(account != null) {
             Util.removeModelFromListById(account.playlists, playlist.id)

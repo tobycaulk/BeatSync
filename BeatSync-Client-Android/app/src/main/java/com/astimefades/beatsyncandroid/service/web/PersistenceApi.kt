@@ -1,5 +1,6 @@
 package com.astimefades.beatsyncandroid.service.web
 
+import com.astimefades.beatsyncandroid.model.Playlist
 import com.astimefades.beatsyncandroid.model.Track
 import com.astimefades.beatsyncandroid.model.request.CreateAccountRequest
 import com.astimefades.beatsyncandroid.model.request.LoginAccountRequest
@@ -28,4 +29,6 @@ class PersistenceApi: ApiCaller<AccountService>(AccountService::class.java) {
     fun getAllPlaylists(request: String) = webService.getAllPlaylists(request)
 
     fun getPlaylist(request: Pair<String, String>) = webService.getPlaylist(request.first, request.second)
+
+    fun savePlaylist(request: Pair<String, Request<Playlist>>) = webService.savePlaylist(request.first, request.second)
 }
