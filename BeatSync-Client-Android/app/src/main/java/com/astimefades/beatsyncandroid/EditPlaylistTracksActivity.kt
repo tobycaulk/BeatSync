@@ -104,15 +104,15 @@ class EditPlaylistTracksActivity : BottomNavigationActivity() {
         )
     }
 
-    inner class EditPlaylistTrackAdapter(context: Context?, tracks: List<Track>?) : ArrayAdapter<Track>(context, R.layout.simple_card, tracks) {
+    inner class EditPlaylistTrackAdapter(context: Context?, tracks: List<Track>?): ArrayAdapter<Track>(context, R.layout.simple_card, tracks) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
             var returnedView: View? = convertView
-            val track = getItem(position)
             if(returnedView == null) {
                 returnedView = LayoutInflater.from(context).inflate(R.layout.simple_card, parent,false)
             }
 
+            val track = getItem(position)
             returnedView!!.simpleCard.text = track.name
             var trackSelected = trackState[track]
             if(trackSelected != null) {

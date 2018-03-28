@@ -31,4 +31,6 @@ class PersistenceApi: ApiCaller<AccountService>(AccountService::class.java) {
     fun getPlaylist(request: Pair<String, String>) = webService.getPlaylist(request.first, request.second)
 
     fun savePlaylist(request: Pair<String, Request<Playlist>>) = webService.savePlaylist(request.first, request.second)
+
+    fun createPlaylist(request: Pair<String, Request<Playlist>>) = webService.createPlaylist(request.first, request.second)
 }

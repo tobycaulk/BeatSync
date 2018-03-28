@@ -12,7 +12,7 @@ public class Util {
     public static <T extends Model> T removeModelFromListById(List<T> t, String id) {
         T toRemove = t
                 .stream()
-                .filter(o -> o.getId().equals(o.getId()))
+                .filter(o -> o.getId().equals(id))
                 .findFirst().orElseGet(() -> null);
         t.remove(toRemove);
 
@@ -22,7 +22,7 @@ public class Util {
     public static <T extends Model> T getModelFromListById(List<T> t, String id) {
         return t
                 .stream()
-                .filter(o -> o.getId().equals(o.getId()))
+                .filter(o -> o.getId().equals(id))
                 .findFirst().orElseGet(() -> null);
     }
 }

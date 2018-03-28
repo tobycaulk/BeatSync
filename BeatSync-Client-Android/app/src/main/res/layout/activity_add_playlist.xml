@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.astimefades.beatsyncandroid.AddPlaylistActivity">
 
+    <include layout="@layout/content_add_playlist"/>
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"

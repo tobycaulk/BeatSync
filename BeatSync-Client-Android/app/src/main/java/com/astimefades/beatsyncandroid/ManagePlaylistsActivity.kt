@@ -1,6 +1,5 @@
 package com.astimefades.beatsyncandroid
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import com.astimefades.beatsyncandroid.model.config.AccountConfiguration
@@ -42,6 +41,6 @@ class ManagePlaylistsActivity : BottomNavigationActivity() {
     }
 
     private fun handleAddPlaylist() {
-
+        startActivity<AddPlaylistActivity>()
     }
 }
