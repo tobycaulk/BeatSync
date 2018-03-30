@@ -23,4 +23,10 @@ abstract open class ApplicationConfiguration(activity: Activity) {
     }
 
     fun getString(prop: String) = sharedPreferences.getString(prop, null)
+
+    fun remove(prop: String) {
+        val editor = getSharedPreferencesEditorInstance()
+        editor.remove(prop)
+        editor.apply()
+    }
 }

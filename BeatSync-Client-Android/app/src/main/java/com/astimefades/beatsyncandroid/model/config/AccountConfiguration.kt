@@ -11,6 +11,10 @@ class AccountConfiguration(activity: Activity) : ApplicationConfiguration(activi
         val ACCOUNT_PROXY_ID_PROP = "accountProxyId"
     }
 
+    fun removeAccountInformation() {
+        remove(ACCOUNT_PROXY_ID_PROP)
+    }
+
     fun updateAccountInformation(proxyId: String) {
         writeString(ACCOUNT_PROXY_ID_PROP, proxyId)
     }

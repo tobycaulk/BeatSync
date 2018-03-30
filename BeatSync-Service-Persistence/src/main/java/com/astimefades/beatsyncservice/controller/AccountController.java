@@ -52,6 +52,11 @@ public class AccountController extends Controller {
         return process(req -> accountService.create(req), request);
     }
 
+    @PostMapping("/logout/{id}")
+    public Response<Boolean> logout(@PathVariable("id") String id) {
+        return processNoRequest(req -> accountService.logout(req), id);
+    }
+
     @GetMapping("/{id}")
     public Response<Account> getAccount(@PathVariable("id") String id) {
         return processNoRequest(req -> accountService.getAccount(req), id);

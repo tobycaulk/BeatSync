@@ -18,6 +18,8 @@ class PersistenceApi: ApiCaller<AccountService>(AccountService::class.java) {
 
     fun checkAccountLogin(request: Request<String>) = webService.checkAccountLogin(request)
 
+    fun logoutAccount(proxyId: String) = webService.logoutAccount(proxyId)
+
     fun getAllTracks(request: String) = webService.getAllTracks(request)
 
     fun getTrack(request: Pair<String, String>) = webService.getTrack(request.first, request.second)

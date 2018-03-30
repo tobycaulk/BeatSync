@@ -27,6 +27,10 @@ interface AccountService {
     fun checkAccountLogin(@Body request: Request<String>): Call<Response<String>>
 
     @Headers("Content-Type: application/json")
+    @POST("account/logout/{id}")
+    fun logoutAccount(@Path("id") proxyId: String): Call<Response<Boolean>>
+
+    @Headers("Content-Type: application/json")
     @GET("account/{id}/track/all")
     fun getAllTracks(@Path("id") id: String): Call<Response<List<Track>>>
 

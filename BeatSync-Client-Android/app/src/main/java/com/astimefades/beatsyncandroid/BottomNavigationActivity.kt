@@ -16,6 +16,7 @@ open abstract class BottomNavigationActivity: AppCompatActivity() {
             action_tracks -> startActivity<ManageTracksActivity>()
             action_playlists -> startActivity<ManagePlaylistsActivity>()
             action_session -> Toast.makeText(this@BottomNavigationActivity, "Manage session clicked", Toast.LENGTH_SHORT).show()
+            action_account -> startActivity<AccountActivity>()
         }
 
         return true

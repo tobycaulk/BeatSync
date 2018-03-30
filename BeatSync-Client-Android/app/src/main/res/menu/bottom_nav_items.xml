@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_group_black_24dp"
         android:title="Session" />
 
+    <item
+        android:id="@+id/action_account"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:title="Account" />
+
 </menu>

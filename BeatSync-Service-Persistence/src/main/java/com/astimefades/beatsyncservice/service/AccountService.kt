@@ -21,7 +21,8 @@ class AccountService(@Autowired accountRepository: AccountRepository): BaseAccou
             if(PasswordUtil.checkPassword(request.password, account.password)) {
                 var proxyId = account.proxyId
                 if(proxyId == null || proxyId == "") {
-                    account.proxyId = ObjectId().toString()
+                    proxyId = ObjectId().toString()
+                    account.proxyId = proxyId
                     updateAccount(account)
                 }
 
@@ -49,5 +50,17 @@ class AccountService(@Autowired accountRepository: AccountRepository): BaseAccou
         accountRepository.create(account)
 
         return proxyId
+    }
+
+    fun logout(proxyId: String): Boolean {
+        var account = getAccountByProxyId(proxyId)
+        if(account != null) {
+            account.proxyId = null
+            updateAccount(account)
+
+            return getAccountByProxyId(proxyId) == null
+        } else {
+            throw BeatSyncError.getException(BeatSyncError.INVALID_PROXY_ID)
+        }
     }
 }

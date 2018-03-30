@@ -25,7 +25,7 @@
             android:layout_centerHorizontal="true"
             android:ems="10"
             android:inputType="text"
-            android:text="Name" />
+            android:hint="Name" />
 
         <ListView
             android:id="@+id/playlistTrackList"
